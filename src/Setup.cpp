@@ -143,7 +143,7 @@ void ShapeApp::setup() {
 	max.set(0.5, 0.5, -0.5);
 
 	voxels.min = min;
-	voxels.side_n = 512;
+	voxels.side_n = 256;
 	voxels.size = (max - min) / (float)voxels.side_n;
 
 	voxels.array_size = voxels.side_n * voxels.side_n * voxels.side_n;

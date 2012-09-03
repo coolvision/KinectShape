@@ -9,8 +9,7 @@ OF_ROOT = ../openFrameworks
 # for example search paths like:
 # USER_CFLAGS = -I src/objects
 
-USER_CFLAGS = -g -I ./include \
--I ./include/OpenclPlatform -I /usr/include/eigen3 -I /usr/local/cuda/include \
+USER_CFLAGS = -g -I ./include -I /usr/include/eigen3 -I /usr/local/cuda/include \
 -I ~/NVIDIA_GPU_Computing_SDK/C/common/inc \
 
 USER_CFLAGS_CUDA = -I ./include -I /home/sk/NVIDIA_GPU_Computing_SDK/C/common/inc \
@@ -25,7 +24,7 @@ USER_LDFLAGS =
 # use this to add system libraries for example:
 # USER_LIBS = -lpango
  
-USER_LIBS = -lusb-1.0 -lX11 -lcuda -L /usr/local/cuda/lib64 -lcudart
+USER_LIBS = -lfreenect -lusb-1.0 -lX11 -lcuda -L /usr/local/cuda/lib -L /usr/local/cuda/lib64 -lcudart
 
 # change this to add different compiler optimizations to your project
 

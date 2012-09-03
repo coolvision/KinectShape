@@ -227,6 +227,8 @@ void ShapeApp::draw() {
 	ofRect(0, 0, SIDEBAR_WIDTH, ofGetWindowHeight());
 	gui.draw();
 	TIME_SAMPLE_DRAW(SIDEBAR_WIDTH, 50);
+
+	usleep(3000);
 }
 
 void ShapeApp::drawMap(ofImage *image, Frame *f,
