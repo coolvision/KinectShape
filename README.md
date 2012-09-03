@@ -9,7 +9,7 @@ For detailed description of this project, see the blog post: http://k10v.com/201
 
 Released under the MIT license.
 
-build instructions
+Build instructions
 ------------------
 All underlying libraries and frameworks are cross-platform (Openframeworks, libfreenect, libeigen, CUDA SDK), so the project is supposed to be cross-platform.
 But for now, only makefile for linux is maintained, and it is tested only on Ubuntu 12.04.
