@@ -21,7 +21,7 @@
     </SliderInt_pixels_step>
     <Toggle_surface_preview>
         <name>surface_preview</name>
-        <value>1</value>
+        <value>0</value>
     </Toggle_surface_preview>
     <Toggle_measured_image>
         <name>measured_image</name>
@@ -53,7 +53,7 @@
     </Button_reset_weights>
     <SliderFloat_march_step>
         <name>march_step</name>
-        <value>0.0109475</value>
+        <value>0.037315</value>
     </SliderFloat_march_step>
     <SliderInt_iterations_n>
         <name>iterations_n</name>
@@ -65,7 +65,7 @@
     </Button_save_snapshot>
     <SliderInt_icp_iterations>
         <name>icp_iterations</name>
-        <value>3</value>
+        <value>2</value>
     </SliderInt_icp_iterations>
     <SliderFloat_normals_threshold>
         <name>normals_threshold</name>

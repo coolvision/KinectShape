@@ -14,12 +14,11 @@ float ShapeApp::correspondenceIteration(ofNode *t) {
 	if (ui_icp_gpu_draw) {
 		for (int y = 0; y < est_f.host.height; y += est_f.host.step) {
 			for (int x = 0; x < est_f.host.width; x += est_f.host.step) {
-				setPoint(correspondence_dev, x, y,
-						est_f.host.width, 0.0, 0.0, 0.0);
+				setPoint(correspondence_dev, x, y, est_f.host.width, 0.0, 0.0,
+						0.0);
 			}
 		}
-		copyToDevice(corresp.points_dev, correspondence_dev,
-				new_f.points_bn);
+		copyToDevice(corresp.points_dev, correspondence_dev, new_f.points_bn);
 	}
 
 	TIME_SAMPLE_START("correspondence_GPU");
@@ -31,13 +30,12 @@ float ShapeApp::correspondenceIteration(ofNode *t) {
 	sync();
 
 	copyFromDevice(corresp.AtA_host, corresp.AtA_dev,
-			   corresp.AtA_dev_size * sizeof(float));
+			corresp.AtA_dev_size * sizeof(float));
 	copyFromDevice(corresp.Atb_host, corresp.Atb_dev,
-			   corresp.Atb_dev_size * sizeof(float));
+			corresp.Atb_dev_size * sizeof(float));
 
 	// should measure it
 	correspondence_ratio = 1.0;
-
 
 	for (int i = 0; i < AtA_SIZE; i++) {
 		corresp.AtA_sum[i] = 0.0f;
@@ -62,8 +60,7 @@ float ShapeApp::correspondenceIteration(ofNode *t) {
 	TIME_SAMPLE_STOP("correspondence_GPU");
 
 	if (ui_icp_gpu_draw) {
-		copyFromDevice(correspondence_dev,
-				corresp.points_dev, new_f.points_bn);
+		copyFromDevice(correspondence_dev, corresp.points_dev, new_f.points_bn);
 
 		cout << "GPU AtA_sum" << endl;
 		for (int i = 0; i < 36; i++) {
@@ -107,15 +104,14 @@ float ShapeApp::correspondenceIteration(ofNode *t) {
 		parameters(i) = -parameters(i);
 	}
 
-	t->setOrientation(ofQuaternion(ofRadToDeg(parameters(2)),
-			ofVec3f(0.0, 0.0, 1.0),
-			ofRadToDeg(parameters(1)), ofVec3f(0.0, 1.0, 0.0),
-			ofRadToDeg(parameters(0)), ofVec3f(1.0, 0.0, 0.0)));
+	t->setOrientation(
+			ofQuaternion(ofRadToDeg(parameters(2)), ofVec3f(0.0, 0.0, 1.0),
+					ofRadToDeg(parameters(1)), ofVec3f(0.0, 1.0, 0.0),
+					ofRadToDeg(parameters(0)), ofVec3f(1.0, 0.0, 0.0)));
 	t->setPosition(ofVec3f(-parameters(3), -parameters(4), -parameters(5)));
 
 	return correspondence_ratio;
 }
-
 
 void ShapeApp::drawCorrespondence(Frame *frame, float *correspondence) {
 
@@ -128,10 +124,8 @@ void ShapeApp::drawCorrespondence(Frame *frame, float *correspondence) {
 
 	int corresponding_n = 0;
 
-	for (int y = 0; y < frame->host.height;
-			y += frame->host.step) {
-		for (int x = 0; x < frame->host.width;
-				x += frame->host.step) {
+	for (int y = 0; y < frame->host.height; y += frame->host.step) {
+		for (int x = 0; x < frame->host.width; x += frame->host.step) {
 
 			frame->host.getPoint(&p, x, y);
 			getPoint(&c, correspondence, x, y, frame->host.width);

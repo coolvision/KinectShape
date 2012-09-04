@@ -26,8 +26,8 @@ void ShapeApp::rayMarch(Frame *f, ofMatrix4x4 *t) {
 
 	copyToDevice(camera_opt.t, t->getPtr(), sizeof(float) * 16);
 
-	rayMarchCUDA(camera_opt, ui_march_step, ui_march_iterations_n,
-			ui_rays_step, dev_voxels, f->dev);
+	rayMarchCUDA(camera_opt, ui_march_step, ui_march_iterations_n, ui_rays_step,
+			dev_voxels, f->dev);
 	sync();
 
 	copyFromDevice(f->host.normals, f->dev.normals, f->points_bn);
@@ -42,10 +42,10 @@ void ShapeApp::resetVoxels() {
 		voxels.w_data[i] = 0;
 	}
 
-    copyToDevice(dev_voxels.data, voxels.data, dev_voxels.bytes_n);
+	copyToDevice(dev_voxels.data, voxels.data, dev_voxels.bytes_n);
 	copyToDevice(dev_voxels.w_data, voxels.w_data, dev_voxels.w_bytes_n);
 
-    sync();
+	sync();
 }
 
 void ShapeApp::resetVoxelWeights() {
@@ -56,7 +56,7 @@ void ShapeApp::resetVoxelWeights() {
 
 	copyToDevice(dev_voxels.w_data, voxels.w_data, dev_voxels.w_bytes_n);
 
-    sync();
+	sync();
 }
 
 #define SIDEBAR_WIDTH 250
@@ -92,8 +92,7 @@ void ShapeApp::draw() {
 	ofDrawAxis(500);
 	drawVolume();
 	drawCameraPose(&kinect, ofColor::white, t_estimate);
-	drawCameraPose(&kinect, ofColor::blue,
-			grab_cam->getLocalTransformMatrix());
+	drawCameraPose(&kinect, ofColor::blue, grab_cam->getLocalTransformMatrix());
 	drawCameraPose(&kinect, ofColor::gray, curr_f.t);
 	drawCameraPose(&kinect, ofColor::green, camera.getLocalTransformMatrix());
 
@@ -107,7 +106,7 @@ void ShapeApp::draw() {
 		// only update the data if there is a new frame
 		kinect.update();
 
-		// there is a new frame and we are connected
+		// there is a new frame
 		if ((kinect.isFrameNew() && ui_update_frame) || ui_save_snapshot
 				|| ui_update_continuous) {
 
@@ -138,15 +137,14 @@ void ShapeApp::draw() {
 			new_f.t = t_estimate;
 			new_f.it = new_f.t.getInverse();
 
-		    TIME_SAMPLE_START("rangeToWorld_new_f");
+			TIME_SAMPLE_START("rangeToWorld_new_f");
 			new_f.setFromPixels(kinect.getDistancePixels());
 			rangeToWorld(&new_f);
-		    TIME_SAMPLE_STOP("rangeToWorld_new_f");
+			TIME_SAMPLE_STOP("rangeToWorld_new_f");
 
-
-		    // run several correspondence iterations
-		    TIME_SAMPLE_START("correspondence iterations");
-		    for (int i = 0; i < ui_icp_iterations; i++) {
+			// run several correspondence iterations
+			TIME_SAMPLE_START("correspondence iterations");
+			for (int i = 0; i < ui_icp_iterations; i++) {
 
 				float r = correspondenceIteration(&t_inc);
 
@@ -158,15 +156,14 @@ void ShapeApp::draw() {
 				new_f.t = t_estimate;
 				new_f.it = new_f.t.getInverse();
 				rangeToWorld(&new_f);
-		    }
-		    TIME_SAMPLE_STOP("correspondence iterations");
+			}
+			TIME_SAMPLE_STOP("correspondence iterations");
 
 			est_f.t = t_estimate;
 			est_f.it = est_f.t.getInverse();
 
-
 			if (ui_update_voxels) {
-			    TIME_SAMPLE_START("updateVoxelsCUDA");
+				TIME_SAMPLE_START("updateVoxelsCUDA");
 				copyToDevice(camera_opt.it, est_f.it.getPtr(),
 						sizeof(float) * 16);
 				updateVoxelsCUDA(camera_opt, dev_voxels, new_f.dev);
@@ -176,7 +173,7 @@ void ShapeApp::draw() {
 
 			// use raymarching to get estimated depth and normals map
 			if (ui_estimate_maps) {
-			    TIME_SAMPLE_START("ui_estimate_maps_rayMarch");
+				TIME_SAMPLE_START("ui_estimate_maps_rayMarch");
 				rayMarch(&est_f, &est_f.t);
 				TIME_SAMPLE_STOP("ui_estimate_maps_rayMarch");
 			}
@@ -200,18 +197,18 @@ void ShapeApp::draw() {
 
 	// view the surface estimated from the voxels,
 	// from an arbitrary point of view, controlled from the UI
-    TIME_SAMPLE_START("drawMap");
+	TIME_SAMPLE_START("drawMap");
 	if (ui_show_surface_preview) {
 		ofMatrix4x4 t = grab_cam->getLocalTransformMatrix();
 		rayMarch(&view_f, &t);
-		drawMap(&view_image, &view_f,
-				ofPoint(SIDEBAR_WIDTH, 0), ui_image_scale, true);
+		drawMap(&view_image, &view_f, ofPoint(SIDEBAR_WIDTH, 0), ui_image_scale,
+				true);
 	}
 	// show  current measured data
 	if (ui_show_measured_image) {
 		drawMap(&image, &new_f,
-				ofPoint(SIDEBAR_WIDTH,
-						DEPTH_Y_RES * ui_image_scale), ui_image_scale, false);
+				ofPoint(SIDEBAR_WIDTH, DEPTH_Y_RES * ui_image_scale),
+				ui_image_scale, false);
 	}
 	// show the surface estimate from the point of view,
 	// of the current camera pose estimate
@@ -231,8 +228,8 @@ void ShapeApp::draw() {
 	usleep(3000);
 }
 
-void ShapeApp::drawMap(ofImage *image, Frame *f,
-		ofPoint offset, float scale, bool flip) {
+void ShapeApp::drawMap(ofImage *image, Frame *f, ofPoint offset, float scale,
+		bool flip) {
 
 	unsigned char *pixels = image->getPixels();
 

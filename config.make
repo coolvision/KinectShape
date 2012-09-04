@@ -24,10 +24,10 @@ USER_LDFLAGS =
 # use this to add system libraries for example:
 # USER_LIBS = -lpango
  
-USER_LIBS = -lfreenect -lusb-1.0 -lX11 -lcuda -L /usr/local/cuda/lib -L /usr/local/cuda/lib64 -lcudart
+USER_LIBS = -lusb-1.0 -lX11 -lcuda -L /usr/local/cuda/lib -L /usr/local/cuda/lib64 -lcudart
 
 # change this to add different compiler optimizations to your project
 
 USER_COMPILER_OPTIMIZATION = -march=native -mtune=native -O3
 
-EXCLUDE_FROM_SOURCE="bin,.xcodeproj,obj"
+EXCLUDE_FROM_SOURCE="bin,.xcodeproj,obj,all_addons"
