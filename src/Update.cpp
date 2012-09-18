@@ -15,10 +15,6 @@ void ShapeApp::keyPressed(ofKeyEventArgs &args) {
 
 	switch (args.key) {
 
-	case 's':
-		ui_save_snapshot = true;
-		break;
-
 	case 'w':
 		kinect.enableDepthNearValueWhite(!kinect.isDepthNearValueWhite());
 		break;

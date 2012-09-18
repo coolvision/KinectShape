@@ -39,20 +39,6 @@ public:
 	float max[3];
 };
 
-class FrameDataCUDA {
-public:
-	float *depth;
-	float *points;
-	float *normals;
-
-	size_t depth_bn;
-	size_t points_bn;
-
-	int width;
-	int height;
-	int step;
-};
-
 class CorrespondenceCUDA {
 public:
 
