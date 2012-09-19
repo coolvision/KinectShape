@@ -56,6 +56,8 @@ void ShapeApp::setupUI() {
 
 	gui.loadFromXML();
 	gui.show();
+
+	ofSetLogLevel(OF_LOG_VERBOSE);
 }
 
 void ShapeApp::setup() {
@@ -185,6 +187,10 @@ void setFloat3(float *f, ofPoint p) {
 }
 
 void ShapeApp::exit() {
+
+
+	gui.saveToXML();
+
 
 	delete grab_cam;
 
