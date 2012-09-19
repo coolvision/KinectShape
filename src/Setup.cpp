@@ -82,15 +82,12 @@ void ShapeApp::setup() {
 	// setup tracking data objects
 //=============================================================================
 	// CPU
-	curr_f.kinect = &kinect;
 	curr_f.init(DEPTH_X_RES, DEPTH_Y_RES);
 	curr_f.allocateHost();
 
-	new_f.kinect = &kinect;
 	new_f.init(DEPTH_X_RES, DEPTH_Y_RES);
 	new_f.allocateHost();
 
-	est_f.kinect = &kinect;
 	est_f.init(DEPTH_X_RES, DEPTH_Y_RES);
 	est_f.allocateHost();
 

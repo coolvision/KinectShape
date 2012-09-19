@@ -132,9 +132,9 @@ ifeq ($(findstring addons.make,$(wildcard *.make)),addons.make)
 	    ADDONSLIBS += $(ADDONS_LIBS_SHARED)
 
 
-	    ADDONS_SOURCES = $(shell find $(ADDONS_DIRS) -name "*.cpp" -or -name "*.c" 2> /dev/null)
+	    ADDONS_SOURCES = $(shell find $(ADDONS_DIRS) -name "*.cpp" -or -name "*.c" -or -name "*.cu" 2> /dev/null)
 	    ADDONS_SOURCES += $(shell find $(ADDONS_LIBS_DIRS) -name "*.cpp" -or -name "*.c" -or -name "*.cc" -or -name "*.cxx" 2>/dev/null)
-	    ADDONS_OBJFILES = $(subst $(OF_ROOT)/, ,$(patsubst %.cc,%.o,$(patsubst %.c,%.o,$(patsubst %.cxx,%.o,$(patsubst %.cpp,%.o,$(ADDONS_SOURCES))))))
+	    ADDONS_OBJFILES = $(subst $(OF_ROOT)/, ,$(patsubst %.cu,%.o,$(patsubst %.cc,%.o,$(patsubst %.c,%.o,$(patsubst %.cxx,%.o,$(patsubst %.cpp,%.o,$(ADDONS_SOURCES)))))))
 	endif
 endif
 
@@ -179,7 +179,7 @@ all:
 $(OBJ_OUTPUT)%.o: %.cu
 	@echo "compiling cuda object for: " $<
 	mkdir -p $(@D)
-	nvcc -o $@ -c $< $(USER_CFLAGS_CUDA)
+	nvcc -o $@ -c $< $(USER_CFLAGS_CUDA) $(ADDONSCFLAGS)
 
 $(OBJ_OUTPUT)%.o: %.cpp
 	@echo "compiling $(ARCH) object for: " $<
@@ -200,6 +200,12 @@ $(OBJ_OUTPUT)%.o: %.cc
 	@echo "compiling $(ARCH) object for: " $<
 	mkdir -p $(@D)
 	$(CC) -c $(TARGET_CFLAGS) $(CFLAGS) $(ADDONSCFLAGS) $(USER_CFLAGS) -MMD -MP -MF$(OBJ_OUTPUT)$*.d -MT$(OBJ_OUTPUT)$*.o -o$@ -c $<
+
+# CUDA compiling
+$(OBJ_OUTPUT)%.o: $(OF_ROOT)/%.cu
+	@echo "compiling addon cuda object for: " $<
+	mkdir -p $(@D)
+	nvcc -o $@ -c $< $(USER_CFLAGS_CUDA) $(ADDONSCFLAGS)
 
 $(OBJ_OUTPUT)%.o: $(OF_ROOT)/%.cpp
 	@echo "compiling addon $(ARCH) object for" $<
@@ -230,6 +236,12 @@ $(OBJ_OUTPUT)%.o: $(USER_SOURCE_DIR)/%.cc
 	@echo "compiling $(ARCH) object for: " $<
 	mkdir -p $(@D)
 	$(CC) $(TARGET_CFLAGS) $(CFLAGS) $(ADDONSCFLAGS) $(USER_CFLAGS) -MMD -MP -MF$(OBJ_OUTPUT)$*.d -MT$(OBJ_OUTPUT)$*.o -o$@ -c $<
+
+# CUDA compiling
+$(OBJ_OUTPUT)%.o: $(USER_SOURCE_DIR)/%.cu
+	@echo "compiling cuda object for: " $<
+	mkdir -p $(@D)
+	nvcc -o $@ -c $< $(USER_CFLAGS_CUDA)
 
 $(OBJ_OUTPUT)%.o: $(USER_SOURCE_DIR)/%.cpp
 	@echo "compiling $(ARCH) object for: " $<

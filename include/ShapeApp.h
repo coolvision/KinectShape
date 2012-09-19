@@ -12,6 +12,7 @@
 #include "Settings.h"
 
 #include "VoxelsCUDA.h"
+#include "ofxRangeToWorldCUDA.h"
 
 #include "libfreenect-registration.h"
 
@@ -24,9 +25,7 @@
 // simple utils for CUDA code
 void setFloat3(float3 *f, ofPoint p);
 void setFloat3(float *f, ofPoint p);
-void copyToDevice(void *to, void *from, size_t size, bool do_sync = true);
-void copyFromDevice(void *to, void *from, size_t size, bool do_sync = true);
-void sync();
+
 
 void drawCameraPose(ofxKinect *kinect,
 		ofColor color, ofMatrix4x4 transform_matrix);
@@ -34,7 +33,6 @@ void drawCameraPose(ofxKinect *kinect,
 void rayMarchCUDA(CameraOptions camera_opt, float march_step,
 		float march_iterations_n, int step, VoxelVolumeCUDA voxels,
 		FrameDataCUDA data);
-void rangeToWorldCUDA(CameraOptions camera_opt, FrameDataCUDA data);
 void updateVoxelsCUDA(CameraOptions camera_opt, VoxelVolumeCUDA voxels,
 		FrameDataCUDA data);
 void findCorrespondenceCUDA(CameraOptions camera_opt,
@@ -78,7 +76,6 @@ public:
 
 	void resetVoxels();
 	void resetVoxelWeights();
-	void rangeToWorld(Frame *f);
 	void rayMarch(Frame *f, ofMatrix4x4 *t);
 
 	void drawMap(ofImage *image, Frame *f,

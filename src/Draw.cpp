@@ -8,18 +8,6 @@
 #include "ShapeApp.h"
 #include <iostream>
 
-void ShapeApp::rangeToWorld(Frame *f) {
-
-	copyToDevice(camera_opt.t, f->t.getPtr(), sizeof(float) * 16);
-	copyToDevice(f->dev.depth, f->host.depth, f->depth_bn);
-
-	rangeToWorldCUDA(camera_opt, f->dev);
-	sync();
-
-	copyFromDevice(f->host.points, f->dev.points, f->points_bn);
-	copyFromDevice(f->host.normals, f->dev.normals, f->points_bn);
-}
-
 // used for current surface estimate at tracking
 // and for surface preview
 void ShapeApp::rayMarch(Frame *f, ofMatrix4x4 *t) {
@@ -131,7 +119,7 @@ void ShapeApp::draw() {
 				est_f.it = est_f.t.getInverse();
 
 				est_f.setFromPixels(kinect.getDistancePixels());
-				rangeToWorld(&est_f);
+				rangeToWorld(&camera_opt, &est_f);
 			}
 
 			new_f.t = t_estimate;
@@ -139,7 +127,7 @@ void ShapeApp::draw() {
 
 			TIME_SAMPLE_START("rangeToWorld_new_f");
 			new_f.setFromPixels(kinect.getDistancePixels());
-			rangeToWorld(&new_f);
+			rangeToWorld(&camera_opt, &new_f);
 			TIME_SAMPLE_STOP("rangeToWorld_new_f");
 
 			// run several correspondence iterations
@@ -152,10 +140,9 @@ void ShapeApp::draw() {
 					t_estimate *= t_inc.getLocalTransformMatrix();
 					t_estimate_inv = t_estimate.getInverse();
 				}
-
 				new_f.t = t_estimate;
 				new_f.it = new_f.t.getInverse();
-				rangeToWorld(&new_f);
+				rangeToWorld(&camera_opt, &new_f);
 			}
 			TIME_SAMPLE_STOP("correspondence iterations");
 
@@ -181,7 +168,7 @@ void ShapeApp::draw() {
 
 		if (ui_show_mesh) {
 
-			est_f.meshFromPoints(ui_show_depth);
+			est_f.meshFromPoints(ui_show_depth, &kinect);
 			est_f.mesh.drawFaces();
 
 			if (ui_icp_gpu_draw) {

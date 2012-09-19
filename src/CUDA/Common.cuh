@@ -15,6 +15,7 @@
 
 #include "Settings.h"
 #include "VoxelsCUDA.h"
+#include "FrameDataCUDA.h"
 
 __forceinline__
 int divUp(int a, int b) {

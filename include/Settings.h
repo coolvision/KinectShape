@@ -27,18 +27,6 @@
 // right side
 #define Atb_SIZE 6
 
-class CameraOptions {
-public:
-	float *t; // transform matrix
-	float *it; // inverse transform
-	float ref_pix_size;
-	float ref_distance;
-
-	// 3d volume filtering
-	float min[3];
-	float max[3];
-};
-
 class CorrespondenceCUDA {
 public:
 

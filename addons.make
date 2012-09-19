@@ -4,3 +4,4 @@ ofxSimpleGuiToo
 ofxKinect
 ofxXmlSettings
 ofxGrabCam
+ofxRangeToWorldCUDA
