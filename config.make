@@ -28,6 +28,6 @@ USER_LIBS = -lusb-1.0 -lX11 -lcuda -L /usr/local/cuda/lib -L /usr/local/cuda/lib
 
 # change this to add different compiler optimizations to your project
 
-USER_COMPILER_OPTIMIZATION = -march=native -mtune=native -O3
+USER_COMPILER_OPTIMIZATION = 
 
 EXCLUDE_FROM_SOURCE="bin,.xcodeproj,obj,all_addons"
