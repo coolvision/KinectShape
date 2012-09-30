@@ -18,7 +18,6 @@ Requirements:
 - CUDA 4.1 setup: SDK, toolkit, dev driver; nvcc is supposed to be in $PATH; path to SDK and toolkit should be specified in config.make
 - libusb-dev intalled
 - libeigen3-dev intalled
-- libfreenect-dev installed
 - addons from ./all_addons directory pasted into OF_ROOT/addons (2do: should properly fork modified addons and add them as submodules)
 - OF_ROOT set to Openframeworks path on config.make
 - launch as root user, or use instructions on how to run OpenKinect without root privilegies (http://openkinect.org/wiki/Getting_Started#Ubuntu_Manual_Install)
