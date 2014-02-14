@@ -20,7 +20,8 @@
 #undef Success // fix for Eigen and X11 defines conflict
 #include <Eigen/Dense>
 
-#include <cutil_inline.h>    // includes cuda.h and cuda_runtime_api.h
+#include <cuda_runtime.h>
+#include <helper_cuda.h>    // includes cuda.h and cuda_runtime_api.h
 
 // simple utils for CUDA code
 void setFloat3(float3 *f, ofPoint p);

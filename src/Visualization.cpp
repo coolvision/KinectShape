@@ -7,8 +7,8 @@
 
 #include "ShapeApp.h"
 
-void drawCameraPose(ofxKinect *kinect,
-		ofColor color, ofMatrix4x4 transform_matrix) {
+void drawCameraPose(ofxKinect *kinect, ofColor color,
+        ofMatrix4x4 transform_matrix) {
 
 	ofPoint near[4];
 	ofPoint far[4];
@@ -17,8 +17,10 @@ void drawCameraPose(ofxKinect *kinect,
 	ofPoint world_near[4];
 	ofPoint world_far[4];
 
-	int width = kinect->getDepthPixelsRef().getWidth();
-	int height = kinect->getDepthPixelsRef().getHeight();
+	//int width = kinect->getDepthPixelsRef().getWidth();
+	//int height = kinect->getDepthPixelsRef().getHeight();
+    int width;
+    int height;
 
 	// so, there are some points for display of the camera pose
 	near[0].set(0, 0, 0.0f);
@@ -32,10 +34,10 @@ void drawCameraPose(ofxKinect *kinect,
 
 	// first, transform some points into camera coordinates
 	for (int i = 0; i < 4; i++) {
-		camera_near[i] =
-				kinect->getWorldCoordinateAt(near[i].x, near[i].y, near[i].z);
-		camera_far[i] =
-				kinect->getWorldCoordinateAt(far[i].x, far[i].y, far[i].z);
+        camera_near[i] = kinect->getWorldCoordinateAt(near[i].x, near[i].y,
+                near[i].z);
+        camera_far[i] = kinect->getWorldCoordinateAt(far[i].x, far[i].y,
+                far[i].z);
 
 		camera_near[i] /= 1000.0;
 		camera_far[i] /= 1000.0;

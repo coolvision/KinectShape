@@ -79,10 +79,14 @@ void ShapeApp::draw() {
 	// representation of reconstruction stuff in OpenGL coords
 	ofDrawAxis(500);
 	drawVolume();
-	drawCameraPose(&kinect, ofColor::white, t_estimate);
-	drawCameraPose(&kinect, ofColor::blue, grab_cam->getLocalTransformMatrix());
-	drawCameraPose(&kinect, ofColor::gray, curr_f.t);
-	drawCameraPose(&kinect, ofColor::green, camera.getLocalTransformMatrix());
+    if (kinect_on) {
+        drawCameraPose(&kinect, ofColor::white, t_estimate);
+        drawCameraPose(&kinect, ofColor::blue,
+                grab_cam->getLocalTransformMatrix());
+        drawCameraPose(&kinect, ofColor::gray, curr_f.t);
+        drawCameraPose(&kinect, ofColor::green,
+                camera.getLocalTransformMatrix());
+    }
 
 	if (kinect_on) {
 

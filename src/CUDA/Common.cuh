@@ -10,8 +10,11 @@
 #include <cuda.h>
 #include <float.h>
 
-#include <cutil_inline.h>
-#include <cutil_math.h>
+#include <helper_functions.h>
+#include <helper_cuda.h>
+#include <helper_math.h>
+//#include <cutil_inline.h>
+//#include <cutil_math.h>
 
 #include "Settings.h"
 #include "VoxelsCUDA.h"

@@ -7,8 +7,8 @@
 
 #include "ShapeApp.h"
 
-#include <cutil_inline.h> // includes cuda.h and cuda_runtime_api.h
-
+#include <cuda_runtime.h>
+#include <helper_cuda.h>    // includes cuda.h and cuda_runtime_api.h
 int divUp(int a, int b) {
 	return (a % b != 0) ? (a / b + 1) : (a / b);
 }
@@ -55,6 +55,7 @@ void ShapeApp::setupUI() {
 	gui.addToggle("draw", ui_icp_gpu_draw);
 
 	gui.loadFromXML();
+    gui.setAlignRight(false);
 	gui.show();
 
 	ofSetLogLevel(OF_LOG_VERBOSE);
@@ -72,7 +73,7 @@ void ShapeApp::setup() {
 		kinect_on = false;
 	}
 
-	while (!kinect.isConnected());
+    //while (!kinect.isConnected());
 
 	ofSetFrameRate(30);
 	TIME_SAMPLE_SET_FRAMERATE(30.0f);
@@ -109,10 +110,8 @@ void ShapeApp::setup() {
 	// data for ICP
 //=============================================================================
 	// GPU
-	corresp.blocks_x =
-			divUp(DEPTH_X_RES, CORRESPONDENCE_BLOCK_X);
-	corresp.blocks_y =
-			divUp(DEPTH_Y_RES, CORRESPONDENCE_BLOCK_Y);
+    corresp.blocks_x = divUp(DEPTH_X_RES, CORRESPONDENCE_BLOCK_X);
+    corresp.blocks_y = divUp(DEPTH_Y_RES, CORRESPONDENCE_BLOCK_Y);
 	corresp.blocks_n = corresp.blocks_x * corresp.blocks_y;
 	corresp.AtA_dev_size = AtA_SIZE * corresp.blocks_n;
 	corresp.Atb_dev_size = Atb_SIZE * corresp.blocks_n;
@@ -155,8 +154,12 @@ void ShapeApp::setup() {
 	// GPU
 	cudaMalloc((void **) &camera_opt.t, sizeof(float) * 16);
 	cudaMalloc((void **) &camera_opt.it, sizeof(float) * 16);
-	camera_opt.ref_pix_size = kinect.getRefPixelSize();
-	camera_opt.ref_distance = kinect.getRefDistance();
+    
+	if (kinect_on) {
+        camera_opt.ref_pix_size = kinect.getZeroPlanePixelSize();
+        camera_opt.ref_distance = kinect.getZeroPlaneDistance();
+    }
+
 	setFloat3(camera_opt.min, min);
 	setFloat3(camera_opt.max, max);
 
@@ -188,9 +191,7 @@ void setFloat3(float *f, ofPoint p) {
 
 void ShapeApp::exit() {
 
-
 	gui.saveToXML();
-
 
 	delete grab_cam;
 
@@ -217,9 +218,10 @@ void ShapeApp::exit() {
 	est_f.releaseDevice();
 	view_f.releaseDevice();
 
+    if (kinect_on) {
 	kinect.close();
+    }
 
 	cout << "ShapeApp::exit()" << endl;
 }
-
 
