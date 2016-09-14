@@ -5,7 +5,7 @@ Implementation of "KinectFusion" 3d shape reconstruction method, described in:
 
 _"Richard A. Newcombe, Shahram Izadi, Otmar Hilliges, David Molyneaux, David Kim, Andrew J. Davison, Pushmeet Kohli, Jamie Shotton, Steve Hodges, Andrew W. Fitzgibbon: KinectFusion: Real-time dense surface mapping and tracking. ISMAR 2011: 127-136"_
 
-For detailed description of this project, see the blog post: http://k10v.com/18/
+Demo video: https://vimeo.com/48663514
 
 Released under the MIT license.
 
